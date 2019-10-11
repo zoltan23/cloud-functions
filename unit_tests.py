@@ -1,20 +1,40 @@
 import instrument_classification_module
+import matplotlib.pyplot as plt
+import pandas as pd
+import os
+import librosa
+import librosa.display
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from keras.utils import to_categorical
+from scipy.io import wavfile as wav
+import numpy as np
 
-#Create a shortened module reference
-mod = instrument_classification_module
+from datetime import datetime
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Convolution2D, MaxPooling2D
+from keras.callbacks import ModelCheckpoint
+from keras.optimizers import Adam
+from keras.utils import np_utils
+from sklearn import metrics
+from keras.models import load_model
 
-filename = '/tf/desktop/Audio-Classification/clean/229be2be.wav' 
+def predict(filename, instrument):
+    predicted_instrument = instrument_classification_module.classify(filename)
+    if (instrument == predicted_instrument):
+        print('TEST PASSED!!!!! Expected' + instrument + ' and got ' + predicted_instrument )
+    else:
+        print('TEST FAILED!!!!! Expected' + instrument + ' and got ' + predicted_instrument )
 
-#Unit tests
-mod.read_wavfile(filename)
+def predictedTrumpetTest():
+    predict('/tf/desktop/Audio-Classification/clean/229be2be.wav', "Trumpet")
 
-#Initialize variables for testing
-librosa_audio, scipy_audio, librosa_sample_rate, scipy_sample_rate = mod.read_wavfile(filename)
-
-mod.wavfile_min_max(scipy_audio, librosa_audio)
-mod.plot_wavfile(scipy_audio)
-mod.plot_merged(librosa_audio)
-mod.mffcs(librosa_audio, librosa_sample_rate)
+def predictedClarinetTest():
+    predict('/tf/desktop/Audio-Classification/clean/229be2be.wav', "Trumpet")    
 
 
+    
 
+# predictedInstrumentTest('/tf/desktop/Audio-Classification/clean/229be2be.wav', "Saxophone")
+# predictedInstrumentTest('/tf/desktop/Audio-Classification/clean/229be2be.wav', "Clarinet")
